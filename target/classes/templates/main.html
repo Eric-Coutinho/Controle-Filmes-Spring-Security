@@ -1,0 +1,27 @@
+<!DOCTYPE html><html><body>
+<h1>Olá, ${user.nome}</h1>
+<h2>Para Assistir</h2>
+<ul>
+  <#list user.paraAssistir as f>
+    <li>${f.nome} (${f.genero}, ${f.ano})
+      <form action="/filmes/assistido" method="post" style="display:inline;">
+        <input type="hidden" name="nome" value="${f.nome}"/>
+        <button type="submit">Marcar Assistido</button>
+      </form>
+      <form action="/filmes/remover" method="post" style="display:inline;">
+        <input type="hidden" name="nome" value="${f.nome}"/>
+        <button type="submit">Remover</button>
+      </form>
+    </li>
+  </#list>
+</ul>
+<a href="/filmes/novo">Adicionar Filme</a>
+<h2>Assistidos</h2>
+<ul>
+  <#list user.assistidos as f>
+    <li>${f.nome} em ${f.dataAssistido}</li>
+  </#list>
+</ul>
+<a href="/usuarios/novo">Novo Usuário</a> |
+<a href="/logout">Logout</a>
+</body></html>

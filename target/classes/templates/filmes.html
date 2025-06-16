@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><body>
+<h1>Cadastrar Filme</h1>
+<form action="/filmes/add" method="post">
+  Nome: <input type="text" name="nome"/><br/>
+  Gênero: <input type="text" name="genero"/><br/>
+  Ano: <input type="number" name="ano"/><br/>
+  <button type="submit">Salvar</button>
+</form>
+<p style="color:red;">${erro}</p>
+<a href="/">Voltar</a>
+</body></html>

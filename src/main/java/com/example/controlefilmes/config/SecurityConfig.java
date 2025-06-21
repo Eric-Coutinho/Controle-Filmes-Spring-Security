@@ -1,4 +1,4 @@
-package config;
+package com.example.controlefilmes.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,7 +45,7 @@ public class SecurityConfig {
 
         UserDetails user = User.builder()
                 .username("adm")
-                .password(encodedPassword)
+                .password(encoder.encode("adm"))
                 .roles("USER")
                 .build();
 

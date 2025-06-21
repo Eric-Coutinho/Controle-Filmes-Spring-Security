@@ -1,9 +1,1 @@
-com\example\controlefilmes\controller\AuthController.class
-com\example\controlefilmes\model\Filme.class
-com\example\controlefilmes\controller\FilmeController.class
-com\example\controlefilmes\controller\MainController.class
-com\example\controlefilmes\model\Usuario.class
-com\example\controlefilmes\service\UsuarioService.class
-com\example\controlefilmes\controller\UsuarioController.class
-com\example\controlefilmes\service\FilmeService.class
 com\example\controlefilmes\ControleFilmesApplication.class

@@ -1,6 +1,8 @@
 package com.example.controlefilmes.service;
-import com.example.controlefilmes.model.Filme;
 import org.springframework.stereotype.Service;
+
+import com.example.controlefilmes.model.Filme;
+
 import java.util.List;
 @Service
 public class FilmeService {

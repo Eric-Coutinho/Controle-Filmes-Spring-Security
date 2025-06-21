@@ -1,10 +1,12 @@
 package com.example.controlefilmes.controller;
-import com.example.controlefilmes.model.Usuario;
-import com.example.controlefilmes.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.controlefilmes.model.Usuario;
+import com.example.controlefilmes.service.UsuarioService;
 @Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {

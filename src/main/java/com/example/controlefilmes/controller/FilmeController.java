@@ -1,11 +1,14 @@
 package com.example.controlefilmes.controller;
-import com.example.controlefilmes.model.Filme;
-import com.example.controlefilmes.model.Usuario;
-import com.example.controlefilmes.service.FilmeService;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.controlefilmes.model.Filme;
+import com.example.controlefilmes.model.Usuario;
+import com.example.controlefilmes.service.FilmeService;
+
 import java.time.LocalDate;
 @Controller
 @RequestMapping("/filmes")

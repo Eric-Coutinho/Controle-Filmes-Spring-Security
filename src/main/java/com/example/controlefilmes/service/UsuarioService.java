@@ -1,9 +1,10 @@
 package com.example.controlefilmes.service;
 
-import com.example.controlefilmes.model.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import com.example.controlefilmes.model.Usuario;
 
 @Service
 public class UsuarioService {

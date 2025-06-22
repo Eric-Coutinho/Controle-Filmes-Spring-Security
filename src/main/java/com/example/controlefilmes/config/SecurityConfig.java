@@ -3,13 +3,15 @@ package com.example.controlefilmes.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.example.controlefilmes.service.CustomUserDetailsService;
 
 @Configuration
 public class SecurityConfig {
@@ -38,17 +40,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        String rawPassword = "adm";
-        String encodedPassword = encoder.encode(rawPassword);
-        System.out.println("Senha criptografada de 'adm': " + encodedPassword);
+    public UserDetailsService userDetailsService() {
+        return new CustomUserDetailsService();
+    }
 
-        UserDetails user = User.builder()
-                .username("adm")
-                .password(encoder.encode("adm"))
-                .roles("USER")
-                .build();
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
-        return new InMemoryUserDetailsManager(user);
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

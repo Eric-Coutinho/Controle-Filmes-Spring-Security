@@ -23,7 +23,6 @@ public class Usuario {
     private List<Filme> assistidos = new ArrayList<>();
 
     public Usuario() {
-        // No-arg constructor required by JPA
     }
 
     public Usuario(String nome, String email, String senha) {

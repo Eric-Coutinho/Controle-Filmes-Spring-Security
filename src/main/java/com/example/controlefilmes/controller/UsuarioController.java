@@ -18,10 +18,8 @@ public class UsuarioController {
         this.usuarioService = us;
     }
 
-    @GetMapping("/novo")
+    @GetMapping("/cadastro")
     public String form(Model m, HttpSession s) {
-        if (s.getAttribute("usuario") == null)
-            return "redirect:/login";
         return "usuarios";
     }
 

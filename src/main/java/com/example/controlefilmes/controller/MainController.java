@@ -28,6 +28,7 @@ public class MainController {
                 .findFirst()
                 .orElse(new Usuario(username, "", ""));
 
+        s.setAttribute("usuario", user);
         m.addAttribute("user", user);
         return "main";
     }

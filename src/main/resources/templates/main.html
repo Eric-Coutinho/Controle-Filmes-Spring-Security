@@ -46,5 +46,68 @@
   </nav>
   <body>
     <h1>Olá, <span th:text="${user.nome}">Usuário</span></h1>
+    <div class="container text-center">
+      <div class="row">
+        <h2>Filmes para Assistir</h2>
+        <div class="col">
+          <a href="/filmes/novo">
+            <button type="button" class="btn btn-primary">Adicionar Filme</button>
+          </a>
+        </div>
+        <div
+          class="row row-cols-1 row-cols-md-3 g-4"
+          th:if="${user.paraAssistir}"
+        >
+          <div class="col" th:each="filme : ${user.paraAssistir}">
+            <div class="card h-100">
+              <img
+                th:src="${filme.imagemUrl}"
+                class="card-img-top"
+                alt="Imagem do filme"
+              />
+              <div class="card-body">
+                <h5 class="card-title" th:text="${filme.titulo}">
+                  Título do filme
+                </h5>
+                <p class="card-text" th:text="${filme.descricao}">
+                  Descrição do filme
+                </p>
+                <a th:href="@{'/filmes/' + ${filme.id}}" class="btn btn-primary"
+                  >Detalhes</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <h2>Filmes Assistidos</h2>
+        <div
+          class="row row-cols-1 row-cols-md-3 g-4"
+          th:if="${user.assistidos}"
+        >
+          <div class="col" th:each="filme : ${user.assistidos}">
+            <div class="card h-100">
+              <img
+                th:src="${filme.imagemUrl}"
+                class="card-img-top"
+                alt="Imagem do filme"
+              />
+              <div class="card-body">
+                <h5 class="card-title" th:text="${filme.titulo}">
+                  Título do filme
+                </h5>
+                <p class="card-text" th:text="${filme.descricao}">
+                  Descrição do filme
+                </p>
+                <a th:href="@{'/filmes/' + ${filme.id}}" class="btn btn-primary"
+                  >Detalhes</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

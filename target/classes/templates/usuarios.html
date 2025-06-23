@@ -3,10 +3,34 @@
 <head>
     <meta charset="UTF-8" />
     <title>Cadastro de Usuário</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            const response = await fetch('/usuarios/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, email, senha })
+            });
+
+            if (response.ok) {
+                alert('Usuário cadastrado com sucesso');
+                window.location.reload();
+            } else {
+                const errorText = await response.text();
+                alert('Erro: ' + errorText);
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Cadastro de Usuário</h1>
-    <form action="#" th:action="@{/usuarios/add}" method="post">
+    <form onsubmit="submitForm(event)">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required />
         <br/>

@@ -23,6 +23,7 @@ public class UsuarioController {
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody Usuario u) {
+        System.out.println(u);
         if (!usuarioService.adicionar(u)) {
             return ResponseEntity.badRequest().body("Email já cadastrado");
         }

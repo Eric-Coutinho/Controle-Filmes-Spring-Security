@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <script>
+      async function submitForm(event) {
+        event.preventDefault();
+        const nome = document.querySelector('input[name="nome"]').value;
+        const genero = document.querySelector('input[name="genero"]').value;
+        const ano = parseInt(document.querySelector('input[name="ano"]').value);
+
+        const response = await fetch('/filmes/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ nome, genero, ano })
+        });
+
+        if (response.ok) {
+          alert('Filme cadastrado com sucesso');
+          window.location.href = '/';
+        } else {
+          const errorText = await response.text();
+          alert('Erro: ' + errorText);
+        }
+      }
+    </script>
+  </head>
   <body>
     <h1>Cadastrar Filme</h1>
-    <form action="/filmes/add" method="post">
-      Nome: <input type="text" name="nome" /><br />
-      Gênero: <input type="text" name="genero" /><br />
-      Ano: <input type="number" name="ano" /><br />
+    <form onsubmit="submitForm(event)">
+      Nome: <input type="text" name="nome" required /><br />
+      Gênero: <input type="text" name="genero" required /><br />
+      Ano: <input type="number" name="ano" required /><br />
       <button type="submit">Salvar</button>
     </form>
     <a href="/">Voltar</a>

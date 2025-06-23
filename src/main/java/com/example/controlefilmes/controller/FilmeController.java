@@ -1,10 +1,13 @@
 package com.example.controlefilmes.controller;
 
-import jakarta.servlet.http.HttpSession;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.controlefilmes.model.Filme;
 import com.example.controlefilmes.model.Usuario;
@@ -12,12 +15,12 @@ import com.example.controlefilmes.service.FilmeService;
 import com.example.controlefilmes.service.UsuarioService;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-@Controller
+@RestController
 @RequestMapping("/filmes")
 public class FilmeController {
     private final FilmeService filmeService;
@@ -29,14 +32,8 @@ public class FilmeController {
         this.filmeService = fs;
     }
 
-    @GetMapping("/novo")
-    public String novoForm(Model m, HttpSession s) {
-        return "filmes";
-    }
-
     @PostMapping("/add")
-    public String add(@RequestParam String nome, @RequestParam String genero, @RequestParam int ano, HttpSession s,
-            Model m) {
+    public ResponseEntity<?> add(@RequestBody Map<String, Object> payload) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Usuario u = usuarioService.listar().stream()
@@ -44,21 +41,23 @@ public class FilmeController {
                 .findFirst()
                 .orElse(null);
         if (u == null) {
-            m.addAttribute("erro", "Usuário não autenticado");
-            return "redirect:/login";
+            return ResponseEntity.status(401).body("Usuário não autenticado");
         }
+        String nome = (String) payload.get("nome");
+        String genero = (String) payload.get("genero");
+        int ano = (int) payload.get("ano");
         Filme f = new Filme();
         f.setNome(nome);
         f.setGenero(genero);
         f.setAno(ano);
         if (!filmeService.adicionar(u.getParaAssistir(), f, u)) {
-            m.addAttribute("erro", "Filme já existe na lista");
+            return ResponseEntity.badRequest().body("Filme já existe na lista");
         }
-        return "redirect:/";
+        return ResponseEntity.ok("Filme adicionado com sucesso");
     }
 
     @PostMapping("/assistido")
-    public String assistido(@RequestParam String nome, HttpSession s) {
+    public ResponseEntity<?> assistido(@RequestBody Map<String, String> payload) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Usuario u = usuarioService.listar().stream()
@@ -66,14 +65,15 @@ public class FilmeController {
                 .findFirst()
                 .orElse(null);
         if (u == null) {
-            return "redirect:/login";
+            return ResponseEntity.status(401).body("Usuário não autenticado");
         }
+        String nome = payload.get("nome");
         filmeService.moverParaAssistidos(u.getParaAssistir(), u.getAssistidos(), nome, LocalDate.now().toString());
-        return "redirect:/";
+        return ResponseEntity.ok("Filme marcado como assistido");
     }
 
     @PostMapping("/remover")
-    public String remover(@RequestParam String nome, HttpSession s) {
+    public ResponseEntity<?> remover(@RequestBody Map<String, String> payload) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Usuario u = usuarioService.listar().stream()
@@ -81,9 +81,15 @@ public class FilmeController {
                 .findFirst()
                 .orElse(null);
         if (u == null) {
-            return "redirect:/login";
+            return ResponseEntity.status(401).body("Usuário não autenticado");
         }
+        String nome = payload.get("nome");
         u.getParaAssistir().removeIf(f -> f.getNome().equalsIgnoreCase(nome));
-        return "redirect:/";
+        return ResponseEntity.ok("Filme removido da lista");
+    }
+
+    @GetMapping("/all")
+    public List<Filme> getAllFilmes() {
+        return filmeService.listar();
     }
 }

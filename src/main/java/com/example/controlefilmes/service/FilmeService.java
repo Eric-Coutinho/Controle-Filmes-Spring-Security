@@ -26,7 +26,7 @@ public class FilmeService {
             f.setUsuario(usuario);
             filmeRepository.save(f);
             lista.add(f);
-            usuarioRepository.save(usuario); // Save user to persist join table changes
+            usuarioRepository.save(usuario);
             return true;
         }
         return false;
@@ -42,5 +42,9 @@ public class FilmeService {
                 break;
             }
         }
+    }
+
+    public java.util.List<Filme> listar() {
+        return filmeRepository.findAll();
     }
 }

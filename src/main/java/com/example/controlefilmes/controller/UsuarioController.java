@@ -1,15 +1,18 @@
 package com.example.controlefilmes.controller;
 
-import jakarta.servlet.http.HttpSession;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 
 import com.example.controlefilmes.model.Usuario;
 import com.example.controlefilmes.service.UsuarioService;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
@@ -18,16 +21,16 @@ public class UsuarioController {
         this.usuarioService = us;
     }
 
-    @GetMapping("/cadastro")
-    public String form(Model m, HttpSession s) {
-        return "usuarios";
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@RequestBody Usuario u) {
+        if (!usuarioService.adicionar(u)) {
+            return ResponseEntity.badRequest().body("Email já cadastrado");
+        }
+        return ResponseEntity.ok("Usuário cadastrado com sucesso");
     }
 
-    @PostMapping("/add")
-    public String add(@RequestParam String nome, @RequestParam String email, @RequestParam String senha, Model m) {
-        Usuario u = new Usuario(nome, email, senha);
-        if (!usuarioService.adicionar(u))
-            m.addAttribute("erro", "Email já cadastrado");
-        return "redirect:/";
+    @GetMapping("/all")
+    public List<Usuario> getAllUsers() {
+        return usuarioService.listar();
     }
 }

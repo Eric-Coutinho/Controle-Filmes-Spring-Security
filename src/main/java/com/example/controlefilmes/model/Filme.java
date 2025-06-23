@@ -24,7 +24,6 @@ public class Filme {
     private Usuario usuario;
 
     public Filme() {
-        // No-arg constructor required by JPA
     }
 
     public Long getId() {

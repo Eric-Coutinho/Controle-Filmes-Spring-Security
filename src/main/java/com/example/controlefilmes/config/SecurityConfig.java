@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .defaultSuccessUrl("/", true)
                         .permitAll())
+                .httpBasic()
+                .and()
                 .logout(logout -> logout.permitAll())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
 

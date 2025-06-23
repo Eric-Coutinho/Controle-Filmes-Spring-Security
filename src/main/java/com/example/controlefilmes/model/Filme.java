@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Filme {
@@ -16,6 +18,10 @@ public class Filme {
     private String genero;
     private int ano;
     private String dataAssistido;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public Filme() {
         // No-arg constructor required by JPA
@@ -33,4 +39,7 @@ public class Filme {
     public void setAno(int ano) { this.ano = ano; }
     public String getDataAssistido() { return dataAssistido; }
     public void setDataAssistido(String dataAssistido) { this.dataAssistido = dataAssistido; }
+
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 }

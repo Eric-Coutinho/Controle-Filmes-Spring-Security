@@ -30,6 +30,10 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public Usuario buscarComFilmesPorNome(String nome) {
+        return usuarioRepository.findByNomeWithFilmes(nome).orElse(null);
+    }
+
     public boolean adicionar(Usuario u) {
         if (usuarioRepository.findByEmail(u.getEmail()).isPresent()) {
             return false;

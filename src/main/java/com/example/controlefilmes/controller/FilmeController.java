@@ -51,7 +51,7 @@ public class FilmeController {
         f.setNome(nome);
         f.setGenero(genero);
         f.setAno(ano);
-        if (!filmeService.adicionar(u.getParaAssistir(), f)) {
+        if (!filmeService.adicionar(u.getParaAssistir(), f, u)) {
             m.addAttribute("erro", "Filme já existe na lista");
         }
         return "redirect:/";

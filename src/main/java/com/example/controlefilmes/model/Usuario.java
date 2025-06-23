@@ -1,8 +1,11 @@
 package com.example.controlefilmes.model;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -16,11 +19,21 @@ public class Usuario {
     private String email;
     private String senha;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Filme> paraAssistir = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "usuarios_para_assistir",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "para_assistir_id")
+    )
+    private Set<Filme> paraAssistir = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Filme> assistidos = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "usuarios_assistidos",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "assistidos_id")
+    )
+    private Set<Filme> assistidos = new HashSet<>();
 
     public Usuario() {
     }
@@ -59,11 +72,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public List<Filme> getParaAssistir() {
+    public Set<Filme> getParaAssistir() {
         return paraAssistir;
     }
 
-    public List<Filme> getAssistidos() {
+    public Set<Filme> getAssistidos() {
         return assistidos;
     }
 }
